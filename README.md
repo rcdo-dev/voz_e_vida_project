@@ -14,19 +14,3 @@ The system documentation may be found in the links below:
 * [Requirements](docs/REQUIREMENTS.md) - The system requirements
 * [Use case scenarios](docs/USE-CASES-SCENARIOS.md) - The documentation of use cases
 * [Solution design](docs/SOLUTION-DESIGN.md) - The design of a solution
-
-
-## Backlog:
-
-- [ ] [General | Splash](https://github.com/leluque/voz-e-vida/issues/3)
-- [ ] [General | Welcome](https://github.com/leluque/voz-e-vida/issues/4)
-- [ ] [General | Login](https://github.com/leluque/voz-e-vida/issues/5)
-- [ ] [General | Sign-up](https://github.com/leluque/voz-e-vida/issues/6)
-- [ ] [General | Home](https://github.com/leluque/voz-e-vida/issues/7)
-- [ ] [General | Settings](https://github.com/leluque/voz-e-vida/issues/8)
-- [ ] [User voice | List patients](https://github.com/leluque/voz-e-vida/issues/9)
-- [ ] [User voice | Edit mode](https://github.com/leluque/voz-e-vida/issues/10)
-- [ ] [User voice | Use + Final mode](https://github.com/leluque/voz-e-vida/issues/11)
-# voz_e_vida
-# voz_e_vida_project
-# voz_e_vida_project
