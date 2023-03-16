@@ -1,0 +1,2426 @@
+openapi: "3.0.2"
+
+info:
+  title: API Voz é vida
+  version: "1.0"
+  description: "API reference of the project Voz é vida."
+
+servers:
+  - url: https://vozevida.com.br
+
+tags:
+  - name: "General"
+  - name: "Auth"
+  - name: "Caregivers"
+  - name: "Board Users"
+  - name: "Boards"
+  - name: "Reports"
+
+paths:
+  ## --------------------------------------------------------------------
+  # >GENERAL-BEGGIN
+
+  # ===>
+  /v1/checkEmailExistence:
+    post:
+      tags:
+        - "General"
+      description: Check whether a user with a specified email is already registered in the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Email found or not
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Email already registered / email not registered
+                  data:
+                    type: object
+                    properties:
+                      isRegistered:
+                        type: boolean
+                        example: true / false
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/checkVersion:
+    get:
+      tags:
+        - "General"
+      description: Check whether the user must or can update the app.
+      responses:
+        "200":
+          description: Returns Ok if the app is up to date.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Up to date
+                  data:
+                    type: object
+        "426":
+          description: Upgrade available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 426
+                  message:
+                    type: string
+                    example: Upgrade available
+                  data:
+                    type: object
+                    properties:
+                      mandatory:
+                        type: string
+                        example: true / false
+
+  # ===>
+  /v1/onboarding:
+    get:
+      tags:
+        - "General"
+      description: Returns the details of the onboarding pages.
+      responses:
+        "200":
+          description: The details of the onboarding pages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Integration page
+                  data:
+                    type: object
+                    properties:
+                      pages:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            number:
+                              type: integer
+                              example: 1
+                            image:
+                              type: string
+                              example: Link image
+                            text:
+                              type: string
+                              example: "Obrigado por escolher o nosso aplicativo!"
+
+  # ===>
+  /v1/home:
+    get:
+      tags:
+        - "General"
+      description: Checks if the caregiver has users and boards.
+      responses:
+        "200":
+          description: Return true or false to caregiver and board users registered.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      registeredBoardUsers:
+                        type: boolean
+                      registeredBoards:
+                        type: boolean
+
+  # >GENERAL-END
+  ## --------------------------------------------------------------------
+
+  ## --------------------------------------------------------------------
+  # >AUTH-BEGGIN
+
+  # ===>
+  /v1/login:
+    post:
+      tags:
+        - "Auth"
+      description: Allows users to authenticate themselves.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                  example: bcrypt-encrypted-password
+                accessCode:
+                  type: string
+                  example: 111444777
+      responses:
+        "200":
+          description: Authenticated user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 1
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      professions_id:
+                        type: integer
+                        example: 1
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "401":
+          description: User not activated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: Account not activated
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "403":
+          description: Wrong username or password / blocked user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 403
+                  message:
+                    type: string
+                    example: Unauthorized access
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: wrong credentials / blocked user
+
+  # ===>
+  /v1/forgotPassword:
+    post:
+      tags:
+        - "Auth"
+      description: Password recovery.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Email sent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Request received
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Email in send queue.
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "403":
+          description: Blocked user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 403
+                  message:
+                    type: string
+                    example: Blocked user
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: The requested user has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: User not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error.
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 429
+                  message:
+                    type: string
+                    example: Too many requests
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: You have requested an e-mail in the last 3 minutes. Please, wait and try again.
+
+  # >AUTH-END
+  ## --------------------------------------------------------------------
+
+  ## --------------------------------------------------------------------
+  # >CAREGIVERS-BEGGIN
+
+  # ===>
+  /v1/caregivers/options:
+    get:
+      tags:
+        - "Caregivers"
+      description: Get the data required to register new or update caregivers.
+      responses:
+        "200":
+          description: Returns a list containing the professions and the link to the privacy terms.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      professions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                              example: 1
+                            description:
+                              type: string
+                              example: Physiotherapist
+                      privacyTermsLink:
+                        type: string
+                        example: link
+
+  # ===>
+  /v1/caregivers:
+    post:
+      tags:
+        - "Caregivers"
+      description: Create new caregiver
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  example: bcrypt-encrypted-password
+                professions_id:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: Caregiver successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: Caregiver successfully created
+                  data:
+                    type: object
+                    properties:
+                      cargiver:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          professions_id:
+                            type: integer
+                            example: 1
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/caregivers/{id}:
+    get:
+      tags:
+        - "Caregivers"
+      description: Return the details of the specified caregiver.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The caregiver id.
+      responses:
+        "200":
+          description: Specified caregiver.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      cargiver:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            example: 1
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          professions_id:
+                            type: integer
+                            example: 1
+
+        "404":
+          description: Caregiver with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Caregiver not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+    put:
+      tags:
+        - "Caregivers"
+      description: Update the details of caregiver.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The caregiver id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  example: bcrypt-encrypted-password
+                caregivers_options_id:
+                  type: number
+                  example: 1
+      responses:
+        "200":
+          description: Caregiver data successfully updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      cargiver:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          caregivers_options_id:
+                            type: number
+                            example: 1
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: Caregiver with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Caregiver not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+    delete:
+      tags:
+        - "Caregivers"
+      description: Delete caregiver
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The caregiver id.
+      responses:
+        "200":
+          description: Deleted caregiver.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+        "404":
+          description: Caregiver with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Caregiver not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # >CAREGIVERS-END
+  ## --------------------------------------------------------------------
+
+  ## --------------------------------------------------------------------
+  # >BOARDUSERS-BEGGIN
+
+  # ===>
+  /v1/boardUsers/options:
+    get:
+      tags:
+        - "Board Users"
+      description: Get the data required to register new board users.
+      responses:
+        "200":
+          description: Returns a list containing the kinship degrees.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      kinshipDegrees:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                              example: 1
+                            kinship:
+                              type: string
+
+  # ===>
+  /v1/boardUsers/filter:
+    post:
+      tags:
+        - "Board Users"
+      description: Filters board users by name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: Returns the board user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      boardUser:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: Board user with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Board user not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/boardUsers:
+    post:
+      tags:
+        - "Board Users"
+      description: Create a new board user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  example: Base 64
+                name:
+                  type: string
+                birthDate:
+                  type: string
+                  example: 1980-12-02
+                cpf:
+                  type: string
+                  example: 11144477799
+                genre:
+                  type: string
+                phoneNumber:
+                  type: string
+                  example: 11922445588
+                responsible:
+                  type: object
+                  properties:
+                    firstPersonName:
+                      type: string
+                    firstKinshipDegrees_id:
+                      type: number
+                      example: 1
+                    secondPersonName:
+                      type: string
+                    secondKinshipDegrees_id:
+                      type: number
+                      example: 2
+                comments:
+                  type: string
+      responses:
+        "201":
+          description: Board user created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: board user created.
+                  data:
+                    type: object
+                    properties:
+                      boardUser:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+                          birthDate:
+                            type: string
+                            example: 1980-12-02
+                          cpf:
+                            type: string
+                            example: 11144477799
+                          genre:
+                            type: string
+                          phoneNumber:
+                            type: string
+                            example: 11922445588
+                          responsible:
+                            type: object
+                            properties:
+                              firstPersonName:
+                                type: string
+                              firstKinshipDegrees_id:
+                                type: number
+                                example: 1
+                              secondPersonName:
+                                type: string
+                              secondKinshipDegrees_id:
+                                type: number
+                                example: 2
+                          comments:
+                            type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+    get:
+      tags:
+        - "Board Users"
+      description: Returns a list containing all registered board users.
+      responses:
+        "200":
+          description: List of board users.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      boardUsers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            picture:
+                              type: string
+                              example: link
+                            name:
+                              type: string
+
+  # ===>
+  /v1/boardUsers/{id}:
+    get:
+      tags:
+        - "Board Users"
+      description: Return the details of a board user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board user id.
+      responses:
+        "200":
+          description: Board user by id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      boardUser:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+                          birthDate:
+                            type: string
+                            example: 1980-12-02
+                          cpf:
+                            type: string
+                            example: 11144477799
+                          genre:
+                            type: string
+                          phoneNumber:
+                            type: string
+                            example: 11922445588
+                          responsible:
+                            type: object
+                            properties:
+                              firstPersonName:
+                                type: string
+                              kinshipFirstPerson:
+                                type: number
+                                example: 1
+                              secondPersonName:
+                                type: string
+                              kinshipSecondPerson:
+                                type: number
+                                example: 2
+                          comments:
+                            type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+    put:
+      tags:
+        - "Board Users"
+      description: Update the details of a specific board user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board user id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                picture:
+                  type: string
+                  example: Base 64
+                name:
+                  type: string
+                birthDate:
+                  type: string
+                  example: 1980-12-02
+                cpf:
+                  type: string
+                  example: 11144477799
+                genre:
+                  type: string
+                phoneNumber:
+                  type: string
+                  example: 11922445588
+                responsible:
+                  type: object
+                  properties:
+                    firstPersonName:
+                      type: string
+                    kinshipFirstPerson:
+                      type: number
+                      example: 1
+                    secondPersonName:
+                      type: string
+                    kinshipSecondPerson:
+                      type: number
+                      example: 2
+                comments:
+                  type: string
+      responses:
+        "200":
+          description: Board user updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      boardUser:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+                          birthDate:
+                            type: string
+                            example: 1980-12-02
+                          cpf:
+                            type: string
+                            example: 11144477799
+                          genre:
+                            type: string
+                          phoneNumber:
+                            type: string
+                            example: 11922445588
+                          responsible:
+                            type: object
+                            properties:
+                              firstPersonName:
+                                type: string
+                              kinshipFirstPerson:
+                                type: number
+                                example: 1
+                              secondPersonName:
+                                type: string
+                              kinshipSecondPerson:
+                                type: number
+                                example: 2
+                          comments:
+                            type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: Board user with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Board user not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+    delete:
+      tags:
+        - "Board Users"
+      description: Delete board user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board user id.
+      responses:
+        "200":
+          description: Board user deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+        "404":
+          description: Board user with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Board user not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # >BOARDUSERS-END
+  ## --------------------------------------------------------------------
+
+  ## --------------------------------------------------------------------
+  # >BOARDS-BEGGIN
+
+  # ===>
+  /v1/boards/{id}/options:
+    get:
+      tags:
+        - "Boards"
+      description: Returns board settings.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+      responses:
+        "200":
+          description: Get the settings for each board.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      settings:
+                        type: object
+                        properties:
+                          boardId:
+                            type: number
+                            example: 1
+                          boardSettings:
+                            type: object
+                            properties:
+                              matrix:
+                                type: object
+                                properties:
+                                  column:
+                                    type: integer
+                                    example: 3
+                                  row:
+                                    type: integer
+                                    example: 2
+                              touchType:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      example: 1
+                                    description:
+                                      type: string
+                              synthesizer:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      example: 1
+                                    voice:
+                                      type: string
+                              pronunciationMode:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      example: 1
+                                    description:
+                                      type: string
+
+  # ===>
+  /v1/boards:
+    post:
+      tags:
+        - "Boards"
+      description: Create a new board.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  example: Base 64
+                name:
+                  type: string
+                speechSynthesis:
+                  type: boolean
+                wordSound:
+                  type: string
+                  example: Base 64
+      responses:
+        "201":
+          description: Board created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      boards:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+                          speechSynthesis:
+                            type: boolean
+                          wordSound:
+                            type: string
+                            example: link
+                          cards:
+                            type: array
+                            items:
+                              type: object
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/boards/{id}:
+    get:
+      tags:
+        - "Boards"
+      description: Returns a list containing the user's boards.
+      responses:
+        "200":
+          description: List of boards.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      boards:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            picture:
+                              type: string
+                              example: link
+                            name:
+                              type: string
+
+    put:
+      tags:
+        - "Boards"
+      description: Updates the details of a specific board.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                picture:
+                  type: string
+                  example: Base 64
+                name:
+                  type: string
+                speechSynthesis:
+                  type: boolean
+                wordSound:
+                  type: string
+                  example: Base 64
+      responses:
+        "200":
+          description: Updated board.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      board:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+                          speechSynthesis:
+                            type: boolean
+                          wordSound:
+                            type: string
+                            example: link
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: Board with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Board not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+    delete:
+      tags:
+        - "Boards"
+      description: Delete a specific board.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+      responses:
+        "200":
+          description: Board deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+        "404":
+          description: Board with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Board not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/boards/filter:
+    post:
+      tags:
+        - "Boards"
+      description: Filter boards by name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: Filtered board.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      board:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          picture:
+                            type: string
+                            example: link
+                          name:
+                            type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: Board with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Board not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/boards/{id}/cards:
+    get:
+      tags:
+        - "Boards"
+      description: Returns cards from the board specified by id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+        - in: path
+          name: page
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number.
+        - in: path
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Page size.
+      responses:
+        "200":
+          description: Gets a list of cards from the specified board.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        example: 1
+                      pageSize:
+                        type: integer
+                        example: 6
+                      board:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            example: 1
+                          cards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                  example: 1
+                                picture:
+                                  type: string
+                                  example: link
+                                name:
+                                  type: string
+        "404":
+          description: Cards with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Cards not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+    post:
+      tags:
+        - "Boards"
+      description: Create a new card.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                board:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    cards:
+                      type: object
+                      properties:
+                        picture:
+                          type: string
+                          example: Base 64
+                        name:
+                          type: string
+                        speechSynthesis:
+                          type: boolean
+                        wordSound:
+                          type: string
+                          example: Base 64
+      responses:
+        "201":
+          description: Card created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      board:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          cards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                  example: 1
+                                picture:
+                                  type: string
+                                  example: link
+                                name:
+                                  type: string
+                                speechSynthesis:
+                                  type: boolean
+                                wordSound:
+                                  type: string
+                                  example: link
+                                cards:
+                                  type: array
+                                  items:
+                                    type: object
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/boards/{id}/cards/{id}:
+    put:
+      tags:
+        - "Boards"
+      description: Updates the details of a specific card.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The card id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                board:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    cards:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        picture:
+                          type: string
+                          example: Base 64
+                        name:
+                          type: string
+                        speechSynthesis:
+                          type: boolean
+                        wordSound:
+                          type: string
+                          example: Base 64
+      responses:
+        "200":
+          description: Updated card.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      board:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          cards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                  example: 1
+                                picture:
+                                  type: string
+                                  example: Base 64
+                                name:
+                                  type: string
+                                speechSynthesis:
+                                  type: boolean
+                                wordSound:
+                                  type: string
+                                  example: Base 64
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+        "404":
+          description: Cards with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Cards not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+    delete:
+      tags:
+        - "Boards"
+      description: Delete card.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The card id.
+      responses:
+        "200":
+          description: Deleted card.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+        "404":
+          description: Cards with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Cards not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # ===>
+  /v1/boards/{id}/cards/{id}/cards:
+    get:
+      tags:
+        - "Boards"
+      description: Returns the cards that can exist within a specific card.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The board id.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The card id.
+        - in: path
+          name: page
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: page number.
+        - in: path
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: page size.
+      responses:
+        "200":
+          description: Gets a list of cards for a specific card.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      pages:
+                        type: integer
+                        example: 1
+                      pageSize:
+                        type: integer
+                        example: 6
+                      board:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          cards:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              cards:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      example: 1
+                                    picture:
+                                      type: string
+                                      example: link
+                                    name:
+                                      type: string
+        "404":
+          description: Cards with requested id has not been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Cards not found
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  /v1/boards/{id}/uses:
+    post:
+      tags:
+        - "Boards"
+      description: Sends the board usage data.
+      parameters:
+        - name: id
+          in: path
+          description: The board id.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                boardId:
+                  type: integer
+                timeStamp:
+                  type: string
+      responses:
+        "200":
+          description: Data sent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Log created
+                  data:
+                    type: object
+                    properties:
+                      log:
+                        type: object
+                        properties:
+                          boardId:
+                            type: integer
+                            example: 1
+                          timeStamp:
+                            type: string
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  /v1/boards/{id}/cards/{id}/uses:
+    post:
+      tags:
+        - "Boards"
+      description: Sends the board usage data.
+      parameters:
+        - name: id
+          in: path
+          description: The board id.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The card id.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                boardId:
+                  type: integer
+                cardId:
+                  type: integer
+                timeStamp:
+                  type: string
+      responses:
+        "200":
+          description: Data sent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Log created
+                  data:
+                    type: object
+                    properties:
+                      log:
+                        type: object
+                        properties:
+                          boardId:
+                            type: integer
+                            example: 1
+                          cardId:
+                            type: integer
+                            example: 1
+                          timeStamp:
+                            type: string
+        "400":
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Error in the request
+                  data:
+                    type: object
+                    properties:
+                      error:
+                        type: string
+                        example: Message error
+
+  # >BOARDS-END
+  ## --------------------------------------------------------------------
+
+  ## --------------------------------------------------------------------
+  # >REPORTS-BEGGIN
+
+  # ===>
+  /v1/report:
+    get:
+      tags:
+        - "Reports"
+      description: Return reports.
+      responses:
+        "200":
+          description: reports.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Reports.
+                  data:
+                    type: object
+                    properties:
+                      report:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          week:
+                            type: object
+                            properties:
+                              weekNumber:
+                                type: integer
+                              day:
+                                type: object
+                                properties:
+                                  usageTime:
+                                    type: string
+                          mostUsedCards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                cardId:
+                                  type: integer
+                                totalUsage:
+                                  type: integer
+                          mostUsedBoards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                boardId:
+                                  type: integer
+                                totalUsage:
+                                  type: integer
+                          lessUsedCards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                cardId:
+                                  type: integer
+                                totalUsage:
+                                  type: integer
+                          lessUsedBoards:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                boardId:
+                                  type: integer
+                                totalUsage:
+                                  type: integer
+
+  # >REPORTS-END
+  ## --------------------------------------------------------------------

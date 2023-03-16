@@ -1,0 +1,84 @@
+{
+    "privacyTerms": "Privacy terms",
+    "alternativeCommunication": "Alternative communication",
+    "back": "Back",
+    "welcome": {
+        "thanks": "Thanks for choosing our app!",
+        "listTitle": "With VOZ É VIDA you can:",
+        "listItemOne": "Add and Remove Users",
+        "listItemTwo": "Edit and transfer folders and cards",
+        "listItemthree": "Connect to multiple devices",
+        "attention": "and the best...",
+        "message": "TOTALLY FREE",
+        "signup": "Create account for free",
+        "alreadyRegistered": "I already have an account",
+        "accessExistingArtboard": "Access existing artboard"
+    },
+    "login": {
+        "welcomeToApp": "Welcome to Voz é Vida",
+        "haveAccount": "Have an account",
+        "or": "Or",
+        "signup": "I want signup",
+        "accessBoard": "Access a board",
+        "googleAccess": "Continue with Google",
+        "appleAccess": "Continue with Apple"
+    },
+    "signup": {
+        "signup": "Create account",
+        "alreadyRegistered": "Have account",
+        "signupAgree": "By creating the account, you agree to our "
+    },
+    "home": {
+        "changeAndUseYourBoards": "Change and use your boards",
+        "checkAndChangeBoardUser": "Check and change board users",
+        "boardUsers": "Board users",
+        "settings": "Settings",
+        "appSettings": "App general settings",
+        "aboutApp": "About App",
+        "whatsNew": "What's new"
+    },
+    "userVoiceMenu": {
+        "selectVoice": "Select who will speak",
+        "editMode": "Edit mode",
+        "finalUser": "Final user"
+    },
+    "registerNewBoardOrCard": {
+        "addTitle": "Register",
+        "aCard": "A card",
+        "anBoard": "An board",
+        "useGoogleVoice": "Use a Google voice",
+        "recordWordWithVoice": "Record phrase or word sound",
+        "pressButtonToRecordInstruction": "(press and hold, speak and keyup the button)",
+        "writeCardNameHint": "Enter card name",
+        "writeBoardNameHint": "Enter board name"
+    },
+    "settings": {
+        "settings": "Settings",
+        "personalData": "Personal data",
+        "changePassword": "Change your password",
+        "help": "Help and opinions",
+        "account": "Account",
+        "removeAccount": "Remove my account"
+    },
+    "fields": {
+        "name": "Name",
+        "lastName": "Last name",
+        "email": "Email",
+        "password": "Password",
+        "repeatPassword": "Repeat password",
+        "newPassword": "New password",
+        "userRelationship": "Relationship with a board user",
+        "accountRelationship": "Account relationship",
+        "accessCodeWith11Digits": "11 digits access code"
+    },
+    "actions": {
+        "makeSignup": "Signup",
+        "addItem": "ADD",
+        "saveItem": "Save",
+        "cancel": "Cancel",
+        "saveAndAdd": "Save and add other",
+        "saveAndBack": "Save and back",
+        "reportProblem": "Report a problem",
+        "talkWithSupport": "Talk with Voz é Vida"
+    }
+}

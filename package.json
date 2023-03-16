@@ -1,0 +1,22 @@
+{
+  "name": "voz-e-vida",
+  "version": "1.0.0",
+  "description": "Alternative communication software",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leluque/voz-e-vida.git"
+  },
+  "author": "Leandro Luque",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/leluque/voz-e-vida/issues"
+  },
+  "homepage": "https://github.com/leluque/voz-e-vida#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^4.1.3"
+  }
+}

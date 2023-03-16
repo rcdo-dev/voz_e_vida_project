@@ -1,0 +1,84 @@
+{
+    "privacyTerms": "Termos de privacidade",
+    "alternativeCommunication": "Comunicação alternativa",
+    "back": "Voltar",
+    "welcome": {
+        "thanks": "Obrigado por escolher nosso aplicativo!",
+        "listTitle": "Com o VOZ É VIDA você pode:",
+        "listItemOne": "Adicionar e remover usuários",
+        "listItemTwo": "Editar e transferir pastas e cartões",
+        "listItemthree": "Se conectar em vários aparelhos",
+        "attention": "e o melhor...",
+        "message": "TOTALMENTE\nGRATUITO",
+        "signup": "Criar conta gratuitamente",
+        "alreadyRegistered": "Já tenho conta",
+        "AccessExistingArtboard": "Acessar prancheta já existente"
+    },
+    "login": {
+        "welcomeToApp": "Bem vindo ao Voz é Vida",
+        "haveAccount": "Já tenho conta",
+        "or": "Ou",
+        "signup": "Quero me cadastrar",
+        "accessBoard": "Acessar uma prancha",
+        "googleAccess": "Continue com o Google",
+        "appleAccess": "Continue com a Apple"
+    },
+    "signup": {
+        "signup": "Criar conta",
+        "alreadyRegistered": "Já tenho cadastro",
+        "signupAgree": "Ao criar a conta você concorda com os nossos "
+    },
+    "home": {
+        "changeAndUseYourBoards": "Edite e use suas pranchas",
+        "checkAndChangeBoardUser": "Consultar e editar os usuários das pranchas",
+        "boardUsers": "Usuário de prancha",
+        "settings": "Configurações",
+        "appSettings": "Configurações gerais do aplicativo",
+        "aboutApp": "Sobre o APP",
+        "whatsNew": "O que há de novo"
+    },
+    "userVoiceMenu": {
+        "selectVoice": "Escolha quem vai falar",
+        "editMode": "Modo editor",
+        "finalUser": "Usuário final"
+    },
+    "registerNewBoardOrCard": {
+        "addTitle": "Adicionando",
+        "aCard": "Um cartão",
+        "anBoard": "Uma prancha",
+        "useGoogleVoice": "Usar a voz do Google",
+        "recordWordWithVoice": "Grave o som da palavra ou frase",
+        "pressButtonToRecordInstruction": "(aperte e segure, fale e solte o botão)",
+        "writeCardNameHint": "Digite o nome do cartão",
+        "writeBoardNameHint": "Digite o nome da prancha"
+    },
+    "settings": {
+        "settings": "Configurações",
+        "personalData": "Dados pessoais",
+        "changePassword": "Trocar a senha",
+        "help": "Ajuda e opinião",
+        "account": "Conta",
+        "removeAccount": "Remover minha conta"
+    },
+    "fields": {
+        "name": "Nome",
+        "lastName": "Sobrenome",
+        "email": "E-mail",
+        "password": "Senha",
+        "repeatPassword": "Repetir a senha",
+        "newPassword": "Nova senha",
+        "userRelationship": "Relação do usuário da prancha",
+        "accountRelationship": "Relação com o usuário",
+        "accessCodeWith11Digits": "Código de acesso com 11 dígitos"
+    },
+    "actions": {
+        "makeSignup": "Fazer cadastro",
+        "saveItem": "Salvar",
+        "addItem": "Adicionar",
+        "cancel": "Cancelar",
+        "saveAndAdd": "Salvar e adicionar outro",
+        "saveAndBack": "Salvar e voltar",
+        "reportProblem": "Reportar um problema",
+        "talkWithSupport": "Fale com Voz é vida"
+    }
+}
